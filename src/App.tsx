@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./App.module.scss";
 
-import { WizLight as WizLightResponse } from "wiz-lights-manager";
 import WizLight from "./components/WizLight/WizLight";
 
 import { useLights } from "./stores/lights";

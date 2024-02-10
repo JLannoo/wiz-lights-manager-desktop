@@ -56,3 +56,11 @@ export function CWToRGB(c: number, w: number): [number, number, number] {
 export function RGBToHex(r: number, g: number, b: number): string {
     return `#${Math.round(r).toString(16).padStart(2, "0")}${Math.round(g).toString(16).padStart(2, "0")}${Math.round(b).toString(16).padStart(2, "0")}`;
 }
+
+/**
+ * Converts Hex to RGB
+ */
+export function HexToRGB(hex: string): [number, number, number] {
+    const bigint = parseInt(hex.slice(1), 16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+}

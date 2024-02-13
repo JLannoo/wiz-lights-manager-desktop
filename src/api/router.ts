@@ -1,4 +1,4 @@
-import { ipcMain, ipcRenderer } from 'electron';
+import { ipcMain, ipcRenderer } from "electron";
 
 export interface Router {
     getFullPath(): string;
@@ -19,7 +19,7 @@ export class Router implements Router {
 
     getFullPath(): string {
         if (this.parent) {
-            return `${this.parent.getFullPath()}:${this.path}`
+            return `${this.parent.getFullPath()}:${this.path}`;
         }
 
         return this.path;
@@ -60,5 +60,5 @@ export class Router implements Router {
     }
 }
 
-export const api = new Router('api');
+export const api = new Router("api");
 

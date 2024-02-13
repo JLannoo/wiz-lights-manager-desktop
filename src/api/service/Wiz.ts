@@ -1,6 +1,6 @@
-import { WizLight, WizLightManager } from "wiz-lights-manager"
+import { WizLight, WizLightManager } from "wiz-lights-manager";
 
-const manager = new WizLightManager()
+const manager = new WizLightManager();
 manager.init();
 
 export async function getLights() {
@@ -15,19 +15,21 @@ export async function refresh() {
     return getLights();
 }
 
-export async function setState(state: WizLight["colorState"], ip?: string) {
-    if (ip) {
-        const light = manager.allLights.lights.find((light) => light.ip === ip);
-        if (light) {
-            await light.setState(state);
-            return state;
-        } else {
-            return undefined;
-        }
-    } else {
+export async function setState(state: WizLight["colorState"], ips?: string[] | string) {    
+    if(!ips) {
         manager.allLights.lights.forEach(async (light) => await light.setState(state));
         return state;
     }
+
+    if (typeof ips === "string") {
+        ips = [ips];
+    }
+
+    const lights = manager.allLights.lights.filter((light) => ips.includes(light.ip));
+    lights.forEach(async (light) => await light.setState(state));
+
+    return state;
+    
 }
 
 function serialize<T>(data: T): T {

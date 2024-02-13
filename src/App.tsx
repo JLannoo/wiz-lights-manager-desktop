@@ -1,30 +1,27 @@
 import { useEffect } from "react";
 import styles from "./App.module.scss";
 
-import WizLight from "./components/WizLight/WizLight";
+import WizLightGroup from "./components/WizLightGroup/WizLightGroup";
 
 import { useLights } from "./stores/lights";
-import { useLoading } from "./stores/loading";
+import WizLight from "./components/WizLightGroup/WizLight/WizLight";
 
 export default function App() {
-    const {lights, refresh} = useLights();
-    const loading = useLoading((state) => state.loading);
+    const { lights, groups, refresh } = useLights();
 
-    useEffect(() => { refresh() }, [refresh]);
-
-    if (loading) {
-        return <h1>Loading...</h1>
-    }
+    useEffect(() => { refresh(); }, []);
 
     return (
-        <div>
-            <h1>Lights</h1>
-            <ul className={styles.WizLightList}>
+        <div className={styles.App}>
+            <h1>Wiz Lights</h1>
+            <div className={styles.lights}>
                 {lights.map((light) => (
                     <WizLight key={light.systemConfig.mac} {...light} />
                 ))}
-            </ul>
-            <button onClick={refresh}>Refresh</button>
+                {Object.entries(groups()).map(([id, group]) => (
+                    <WizLightGroup key={id} name={id} lights={group} />
+                ))}
+            </div>
         </div>
-    )
+    );
 }

@@ -1,1 +1,1 @@
-import "./routes/lights"
+import "./routes/lights";

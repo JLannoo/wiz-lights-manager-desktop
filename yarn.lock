@@ -1684,7 +1684,7 @@ eslint-module-utils@^2.7.4, eslint-module-utils@^2.8.0:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-import@*, eslint-plugin-import@^2.25.0:
+eslint-plugin-import@*, eslint-plugin-import@^2.29.1:
   version "2.29.1"
   resolved "https://registry.npmjs.org/eslint-plugin-import/-/eslint-plugin-import-2.29.1.tgz"
   integrity sha512-BbPC0cuExzhiMo4Ff1BTVwHpjjv28C5R+btTOGaCRC7UEz801up0JadwkeSk5Ued6TG34uaczuVuH6qyy5YUxw==
@@ -2311,6 +2311,11 @@ globby@^11.1.0:
     ignore "^5.2.0"
     merge2 "^1.4.1"
     slash "^3.0.0"
+
+globrex@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/globrex/-/globrex-0.1.2.tgz"
+  integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
 
 gopd@^1.0.1:
   version "1.0.1"
@@ -4364,6 +4369,11 @@ ts-node@^10.0.0:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
+tsconfck@^3.0.1:
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/tsconfck/-/tsconfck-3.0.2.tgz"
+  integrity sha512-6lWtFjwuhS3XI4HsX4Zg0izOI3FU/AI9EGVlPEUMDIhvLPMD4wkiof0WCoDgW7qY+Dy198g4d9miAqUHWHFH6Q==
+
 tsconfig-paths@^3.15.0:
   version "3.15.0"
   resolved "https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-3.15.0.tgz"
@@ -4459,6 +4469,11 @@ typed-array-length@^1.0.4:
     call-bind "^1.0.2"
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
+
+typescript@^5.0.0:
+  version "5.3.3"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
 typescript@>=2.7, "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta", typescript@~4.5.4:
   version "4.5.5"
@@ -4562,7 +4577,16 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vite@^4.1.1:
+vite-tsconfig-paths@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.npmjs.org/vite-tsconfig-paths/-/vite-tsconfig-paths-4.3.1.tgz"
+  integrity sha512-cfgJwcGOsIxXOLU/nELPny2/LUD/lcf1IbfyeKTv2bsupVbTH/xpFtdQlBmIP1GEK2CjjLxYhFfB+QODFAx5aw==
+  dependencies:
+    debug "^4.1.1"
+    globrex "^0.1.2"
+    tsconfck "^3.0.1"
+
+vite@*, vite@^4.1.1:
   version "4.5.2"
   resolved "https://registry.npmjs.org/vite/-/vite-4.5.2.tgz"
   integrity sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==
@@ -4644,9 +4668,9 @@ wide-align@^1.1.5:
     string-width "^1.0.2 || 2 || 3 || 4"
 
 wiz-lights-manager@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/wiz-lights-manager/-/wiz-lights-manager-1.0.2.tgz"
-  integrity sha512-t9fJfXx4jlnh3abc2AckoThjhqC8nrYRiQwUUQ9a26UdX2On7FFUdI7tkH++zAxW5ijK7Xadl0SSkmTBFa3q/w==
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/wiz-lights-manager/-/wiz-lights-manager-1.0.6.tgz"
+  integrity sha512-0hkDNleViexYGFr1EBOx20DLO4CU4eA/A4xfimWPJjtP/0gk7tnuBYonekl0c5Jp1zpKRu0ryuS1ThLFWITEGQ==
 
 wrap-ansi@^6.2.0:
   version "6.2.0"

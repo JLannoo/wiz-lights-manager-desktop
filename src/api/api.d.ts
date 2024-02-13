@@ -8,7 +8,7 @@ export type API = {
         },
         set: {
             all: (state: Partial<WizLight["colorState"]>) => Promise<WizLight["colorState"]>,
-            byIP: (state: Partial<WizLight["colorState"]>, ip: string) => Promise<WizLight["colorState"]>
+            byIP: (state: Partial<WizLight["colorState"]>, ips: string[] | string) => Promise<WizLight["colorState"]>
         }
         refresh: () => Promise<WizLight[]>
     }

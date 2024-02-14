@@ -19,7 +19,7 @@ export default function WizLightGroup(props: WizLightGroupProps) {
     const [groupState, setGroupState] = useState(props.lights[0].colorState);
 
     const { setState, refresh } = useLights((state) => state);
-    const { loading } = useLoading((state) => state);
+    const loading = useLoading((state) => state.loading);
 
     const type = useMemo(() => {
         return getColorType(props.lights[0].colorState);
@@ -36,7 +36,7 @@ export default function WizLightGroup(props: WizLightGroupProps) {
         const dimming = Math.max(...props.lights.map((light) => light.colorState.dimming));
 
         setGroupState({ ...props.lights[0].colorState, state, dimming });
-    }, []);
+    }, [loading]);
 
     
     if (loading) return <h1>Loading...</h1>;

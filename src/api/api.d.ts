@@ -11,6 +11,9 @@ export type API = {
             byIP: (state: Partial<WizLight["colorState"]>, ips: string[] | string) => Promise<WizLight["colorState"]>
         }
         refresh: () => Promise<WizLight[]>
+    },
+    scenes: {
+        get: () => Promise<{ [name: string]: number }>
     }
 }
 

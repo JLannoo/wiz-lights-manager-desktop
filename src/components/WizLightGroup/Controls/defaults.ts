@@ -17,12 +17,6 @@ export const DEFAULT_TEMP_STATE: WizLight["colorState"] = {
     temp: 6500,
 };
 
-export const DEFAULT_CW_STATE: WizLight["colorState"] = {
-    ...DEFAULT_COMMON_STATE,
-    c: 255,
-    w: 255,
-};
-
 export const DEFAULT_SCENE_STATE: WizLight["colorState"] = {
     ...DEFAULT_COMMON_STATE,
     sceneId: 1,

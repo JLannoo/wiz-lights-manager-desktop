@@ -6,11 +6,10 @@ import type { WizLight } from "wiz-lights-manager";
 import { useDebounce } from "@/hooks/useDebounce";
 import RGBControl, { RGBState } from "./ColorControls/RGBControl";
 import KelvinControl, { KelvinState } from "./ColorControls/KelvinControl";
-import CWControl, { CWState } from "./ColorControls/CWControl";
 import SceneControl, { SceneState } from "./ColorControls/SceneControl";
-import { DEFAULT_CW_STATE, DEFAULT_RGB_STATE, DEFAULT_SCENE_STATE, DEFAULT_TEMP_STATE } from "./defaults";
+import { DEFAULT_RGB_STATE, DEFAULT_SCENE_STATE, DEFAULT_TEMP_STATE } from "./defaults";
 
-type ColorState = RGBState | KelvinState | CWState | SceneState;
+type ColorState = RGBState | KelvinState | SceneState;
 
 type ControlsProps = {
     type: ColorState["type"];
@@ -48,10 +47,11 @@ export default function Controls(props: ControlsProps) {
                 tempState={tempState}
                 setTempState={setTempState}
             />;
-        case "cw":
-            return <CWControl />;
         case "scene":
-            return <SceneControl />;
+            return <SceneControl
+                tempState={tempState}
+                setTempState={setTempState}
+            />;
         default:
             return <p>Unknown color type</p>;
         }
@@ -72,9 +72,6 @@ export default function Controls(props: ControlsProps) {
             break;
         case "temp":
             setTempState(DEFAULT_TEMP_STATE);
-            break;
-        case "cw":
-            setTempState(DEFAULT_CW_STATE);
             break;
         case "scene":
             setTempState(DEFAULT_SCENE_STATE);

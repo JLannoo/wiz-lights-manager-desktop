@@ -15,15 +15,8 @@ export const exposedMethods = {
         },
         refresh: () => ipcRenderer.invoke("api:lights:refresh"),
     },
-    groups: {
-        get: {
-            all: () => ipcRenderer.invoke("api:lights:groups:get:all"),
-            byID: (id: string) => ipcRenderer.invoke("api:lights:groups:get:byID", id),
-        },
-        set: {
-            all: (state: WizLight["colorState"]) => ipcRenderer.invoke("api:lights:groups:set:all", state),
-            byID: (state: WizLight["colorState"], id: string) => ipcRenderer.invoke("api:lights:groups:set:byID", state, id),
-        },
+    scenes: {
+        get: () => ipcRenderer.invoke("api:scenes:get"),
     },
 };
 

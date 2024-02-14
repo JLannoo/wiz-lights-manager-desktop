@@ -84,7 +84,6 @@ export default function Controls(props: ControlsProps) {
             <select name="colorType" id="colorType" onChange={onColorTypeChange} defaultValue={props.type}>
                 <option value="rgb">RGB</option>
                 <option value="temp">Temperature</option>
-                <option value="cw">Cool/Warm</option>
                 <option value="scene">Scene</option>
             </select>
 

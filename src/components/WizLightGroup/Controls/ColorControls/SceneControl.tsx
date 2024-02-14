@@ -32,8 +32,8 @@ export default function SceneControl(props: SceneControlProps) {
                 ))}
             </select>
 
-            <label htmlFor="speed">Speed: {props.tempState.speed}</label>
             <input type="range" min={0} max={100} value={props.tempState.speed} onChange={(e) => props.setTempState({ ...props.tempState, speed: parseInt(e.target.value) })} />
+            <label htmlFor="speed">Speed: {props.tempState.speed}</label>
         </div>
     );
 }

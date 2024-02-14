@@ -1,4 +1,4 @@
-import { CWToRGB, KelvinToRGB } from "@/utils/color";
+import { KelvinToRGB } from "@/utils/color";
 import { WizLight } from "wiz-lights-manager";
 
 export function getDisplayColor(colorState: WizLight["colorState"]) {
@@ -9,10 +9,6 @@ export function getDisplayColor(colorState: WizLight["colorState"]) {
 
     } else if ("r" in colorState) {
         color = {r: colorState.r, g: colorState.g, b: colorState.b, a: 1};
-
-    } else if ("c" in colorState && "w" in colorState) {
-        const [r,g,b] = CWToRGB(colorState.c, colorState.w);
-        color = {r, g, b, a: 1};
 
     } else {
         color = {r: 0, g: 0, b: 0, a: 1};

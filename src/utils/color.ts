@@ -6,6 +6,7 @@ export function KelvinToRGB(temp: number): [number, number, number] {
     let red: number;
     let green: number;
     let blue: number;
+    temp = temp / 100 + 10; // +10 offset to make the color a bit colder
 
     if (temp <= 66) {
         red = 255;
@@ -34,20 +35,6 @@ export function KelvinToRGB(temp: number): [number, number, number] {
     }
 
     return [red, green, blue];
-}
-
-/**
- * Converts Cool/Warm (0-255) white to Kelvin
- */
-export function CWToKelvin(c: number, w: number): number {
-    return Math.round(1000000 / (c * (1000000 / (c + w))));
-}
-
-/**
- * Converts Cool/Warm (0-255) white to RGB
- */
-export function CWToRGB(c: number, w: number): [number, number, number] {
-    return KelvinToRGB(CWToKelvin(c, w));
 }
 
 /**

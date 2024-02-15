@@ -8,6 +8,7 @@ import RGBControl, { RGBState } from "./ColorControls/RGBControl";
 import KelvinControl, { KelvinState } from "./ColorControls/KelvinControl";
 import SceneControl, { SceneState } from "./ColorControls/SceneControl";
 import { DEFAULT_RGB_STATE, DEFAULT_SCENE_STATE, DEFAULT_TEMP_STATE } from "./defaults";
+import RangeNumberCombo from "@/components/Inputs/RangeNumberCombo";
 
 type ColorState = RGBState | KelvinState | SceneState;
 
@@ -93,13 +94,14 @@ export default function Controls(props: ControlsProps) {
                 {tempState?.state ? "Turn off" : "Turn on"}
             </button>
 
-            <input 
-                type="range" 
-                min={0} 
-                max={100}
-                value={tempState?.dimming}
-                onChange={(e) => {
-                    setTempState((state) => ({...state, dimming: Number(e.target.value)}));
+            <RangeNumberCombo
+                label="Brightness:"
+                unit="%"
+                inputProps={{
+                    min: 10,
+                    max: 100,
+                    value: tempState?.dimming,
+                    onChange: (e) => setTempState({ ...tempState, dimming: parseInt(e.target.value) }),
                 }}
             />
             

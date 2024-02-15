@@ -1,3 +1,4 @@
+import RangeNumberCombo from "@/components/Inputs/RangeNumberCombo";
 import { useEffect, useState } from "react";
 import { WizLight } from "wiz-lights-manager";
 
@@ -13,7 +14,7 @@ export type SceneControlProps = {
 }
 
 export default function SceneControl(props: SceneControlProps) {
-    if(!("sceneId" in props.tempState)) return `Error: Invalid Scene state: ${JSON.stringify(props.tempState)}`;
+    if(!("sceneId" in props.tempState)) return null;
 
     const [scenes, setScenes] = useState<{ [name: string]: number }>({});
 
@@ -32,8 +33,15 @@ export default function SceneControl(props: SceneControlProps) {
                 ))}
             </select>
 
-            <input type="range" min={0} max={100} value={props.tempState.speed} onChange={(e) => props.setTempState({ ...props.tempState, speed: parseInt(e.target.value) })} />
-            <label htmlFor="speed">Speed: {props.tempState.speed}</label>
+            <RangeNumberCombo
+                label="Speed:"
+                inputProps={{
+                    min: 10,
+                    max: 100,
+                    value: props.tempState.speed,
+                    onChange: (e) => props.setTempState({ ...props.tempState, speed: parseInt(e.target.value) }),
+                }}
+            />
         </div>
     );
 }

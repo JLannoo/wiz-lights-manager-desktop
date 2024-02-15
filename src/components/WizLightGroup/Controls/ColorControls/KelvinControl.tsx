@@ -1,3 +1,4 @@
+import RangeNumberCombo from "@/components/Inputs/RangeNumberCombo";
 import { WizLight } from "wiz-lights-manager";
 
 export type KelvinState = {
@@ -11,24 +12,18 @@ export type KelvinControlProps = {
 }
 
 export default function KelvinControl(props: KelvinControlProps) {
-    if(!("temp" in props.tempState)) return `Error: Invalid temp state: ${JSON.stringify(props.tempState)}`;
+    if(!("temp" in props.tempState)) return null;
 
     return (
-        <>
-            <input 
-                type="range" 
-                name="temp" 
-                id="temp"
-                min="2200"
-                max="6500"
-                value={props.tempState.temp}
-                onChange={(e) => {
-                    props.setTempState({...props.tempState, temp: Number(e.target.value)});
-                }}
-            />
-            <label htmlFor="temp">
-                {`${props.tempState.temp}K`}
-            </label>
-        </>
+        <RangeNumberCombo
+            label="Temperature:"
+            unit="K"
+            inputProps={{
+                min: 2200,
+                max: 6500,
+                value: props.tempState.temp,
+                onChange: (e) => props.setTempState({ ...props.tempState, temp: parseInt(e.target.value) }),
+            }}
+        />
     );
 }

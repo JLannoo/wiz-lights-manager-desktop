@@ -14,7 +14,7 @@ type RGBControlProps = {
 }
 
 export default function RGBControl(props: RGBControlProps) {
-    if(!("r" in props.tempState)) return `Error: Invalid RGB state: ${JSON.stringify(props.tempState)}`;
+    if(!("r" in props.tempState)) return null;
 
     return (
         <>

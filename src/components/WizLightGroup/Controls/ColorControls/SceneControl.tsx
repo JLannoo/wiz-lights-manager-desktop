@@ -24,7 +24,7 @@ export default function SceneControl(props: SceneControlProps) {
     return (
         <div>
             <select name="scene" id="scene" 
-                defaultValue={props.tempState.sceneId} 
+                value={props.tempState.sceneId} 
                 onChange={(e) => props.setTempState({ ...props.tempState, sceneId: parseInt(e.target.value) })}
             >
                 {Object.entries(scenes).map(([name, id]) => (

@@ -5,13 +5,15 @@ import { WizLight as WizLightType } from "wiz-lights-manager";
 
 import { useLights } from "@/stores/lights";
 import { useLoading } from "@/stores/loading";
+import { useGroups } from "@/stores/groups";
 
 import WizLight from "./WizLight/WizLight";
 import Controls from "./Controls/Controls";
 import { getColorType } from "./WizLight/getColorType";
 
 type WizLightGroupProps = {
-    name: string
+    id: string
+    alias: string
     lights: WizLightType[]
 }
 
@@ -20,6 +22,7 @@ export default function WizLightGroup(props: WizLightGroupProps) {
 
     const { setState, refresh } = useLights((state) => state);
     const loading = useLoading((state) => state.loading);
+    const setAlias = useGroups((state) => state.setAlias);
 
     useEffect(() => {
         const equal = props.lights.every((light) => JSON.stringify(light.colorState) === JSON.stringify(props.lights[0].colorState));
@@ -40,9 +43,16 @@ export default function WizLightGroup(props: WizLightGroupProps) {
     
     if (loading) return <h1>Loading...</h1>;
 
+    function onAliasChange(e: React.FocusEvent<HTMLHeadingElement>) {
+        const alias = e.target.textContent;
+        if (alias === props.alias || !alias.trim().length) return;
+
+        setAlias(props.id.toString(), alias);
+    }
+
     return (
         <div className={styles.WizLightGroup}>
-            <h2>{props.name}</h2>
+            <h2 contentEditable onBlur={onAliasChange}>{props.alias}</h2>
             <ul className={styles.WizLightList}>
                 {props.lights.map((light) => (
                     <WizLight key={light.ip} {...light} />

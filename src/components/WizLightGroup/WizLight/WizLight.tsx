@@ -28,7 +28,7 @@ export default function WizLight(props: WizLightProps) {
                 opacity: displayColor.a, 
             }}
         >
-            <h3>{props.ip}</h3>
+            <h3>{props.alias || props.ip}</h3>
 
             <Controls
                 state={props.colorState}

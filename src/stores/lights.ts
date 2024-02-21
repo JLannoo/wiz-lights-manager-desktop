@@ -5,7 +5,6 @@ import { useLoading } from "./loading";
 
 type LightState = {
     lights: WizLight[]
-    groups: () => Record<string, WizLight[]>
     refresh: () => Promise<void>
     get: (ip: string) => Promise<WizLight | undefined>
     setState: (state: WizLight["colorState"], ips?: string[] | string) => Promise<void>
@@ -13,19 +12,17 @@ type LightState = {
 
 export const useLights = create<LightState>((set, get) => ({
     lights: [],
-    groups: () => {
-        return get().lights.reduce((acc, light) => {
-            const group = light.systemConfig?.groupId || "Ungrouped";
-            if (!acc[group]) acc[group] = [];
-    
-            acc[group].push(light);
-            return acc;
-        }, {} as Record<string, WizLight[]>);
-    },
     refresh: async () => {
         useLoading.getState().setLoading(true);
 
         const lights = await window.api.lights.refresh();
+        const aliases = await window.api.lights.get.aliases();
+
+        lights.forEach((light) => {
+            const alias = aliases.find((a) => a.mac === light.systemConfig?.mac);
+            if (alias) light.alias = alias.alias;
+        });
+
         useLoading.getState().setLoading(false);
 
         set({ lights });

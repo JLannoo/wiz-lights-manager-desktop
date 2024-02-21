@@ -1,12 +1,13 @@
 import { ipcMain, ipcRenderer } from "electron";
 
-export interface Router {
+export interface RouterI {
     getFullPath(): string;
     route(subPath: string): Router;
     handler(name: string, handler: (event: Electron.IpcMainInvokeEvent, ...args: any[]) => any): void;
+    getExposeObject(): { [key: string]: any };
 }
 
-export class Router implements Router {
+export class Router implements RouterI {
     parent?: Router;
     subPath: Router[] = [];
     path: string;

@@ -5,11 +5,17 @@ import WizLightGroup from "./components/WizLightGroup/WizLightGroup";
 
 import { useLights } from "./stores/lights";
 import WizLight from "./components/WizLightGroup/WizLight/WizLight";
+import { useGroups } from "./stores/groups";
 
 export default function App() {
-    const { lights, groups, refresh } = useLights();
+    const { lights, refresh: refreshLights } = useLights();
+    const { groups, refresh: refreshGroups } = useGroups();
+    
 
-    useEffect(() => { refresh(); }, []);
+    useEffect(() => { 
+        refreshLights();
+        refreshGroups();
+    }, []);
 
     return (
         <div className={styles.App}>
@@ -18,8 +24,10 @@ export default function App() {
                 {lights.map((light) => (
                     <WizLight key={light.systemConfig.mac} {...light} />
                 ))}
-                {Object.entries(groups()).map(([id, group]) => (
-                    <WizLightGroup key={id} name={id} lights={group} />
+                {groups().map((group) => (
+                    group.lights.length ? 
+                        <WizLightGroup key={group.id} id={group.id} alias={group.alias} lights={group.lights} />
+                        : null
                 ))}
             </div>
         </div>

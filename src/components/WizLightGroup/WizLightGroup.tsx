@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import styles from "./WizLightGroup.module.scss";
 
 import { WizLight as WizLightType } from "wiz-lights-manager";
 
@@ -11,6 +10,10 @@ import WizLight from "./WizLight/WizLight";
 import Controls from "./Controls/Controls";
 import { getColorType } from "./WizLight/getColorType";
 
+import { Card, CardContent, CardTitle } from "../ui/card";
+import { Switch } from "../ui/switch";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+
 type WizLightGroupProps = {
     id: string
     alias: string
@@ -20,7 +23,7 @@ type WizLightGroupProps = {
 export default function WizLightGroup(props: WizLightGroupProps) {
     const [groupState, setGroupState] = useState(props.lights[0].colorState);
 
-    const { setState, refresh } = useLights((state) => state);
+    const { setState } = useLights((state) => state);
     const loading = useLoading((state) => state.loading);
     const setAlias = useGroups((state) => state.setAlias);
 
@@ -51,21 +54,43 @@ export default function WizLightGroup(props: WizLightGroupProps) {
     }
 
     return (
-        <div className={styles.WizLightGroup}>
-            <h2 contentEditable onBlur={onAliasChange}>{props.alias}</h2>
-            <ul className={styles.WizLightList}>
-                {props.lights.map((light) => (
-                    <WizLight key={light.ip} {...light} />
-                ))}
-            </ul>
-            <button onClick={refresh}>Refresh</button>
+        <>
+            <Card className="flex flex-col w-full p-2">
+                <CardTitle>
+                    <div className="flex justify-between items-center">
+                        <h3 className="text-3xl p-4 font-bold" contentEditable onBlur={onAliasChange}>
+                            {props.alias}
+                        </h3>
+                        <Switch onClick={() => setState({ 
+                            ...groupState, 
+                            state: !groupState.state, 
+                        }, props.lights.map(l => l.ip))} 
+                        checked={groupState.state}
+                        />
+                    </div>
+                </CardTitle>
+                <CardContent className="flex flex-col space-y-4">
+                    <Accordion type="single" collapsible>
+                        <AccordionItem value="1">
+                            <AccordionTrigger className="p-4">
+                                See Lights
+                            </AccordionTrigger>
+                            <AccordionContent className="p-4">
+                                {props.lights.map((light) => (
+                                    <WizLight key={light.ip} {...light} />
+                                ))}
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
 
-            <Controls 
-                state={groupState}
-                setState={setState}
-                ips={props.lights.map((light) => light.ip)}
-                type={type}
-            />
-        </div>
+                    <Controls 
+                        state={groupState}
+                        setState={setState}
+                        ips={props.lights.map((light) => light.ip)}
+                        type={type}
+                    />
+                </CardContent>
+            </Card>
+        </>
     );
 }

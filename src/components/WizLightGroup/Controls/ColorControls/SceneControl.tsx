@@ -1,4 +1,5 @@
-import RangeNumberCombo from "@/components/Inputs/RangeNumberCombo";
+import { Combobox } from "@/components/Combobox/Combobox";
+import { InputWithLabel } from "@/components/Inputs/InputWithLabel";
 import { useEffect, useState } from "react";
 import { WizLight } from "wiz-lights-manager";
 
@@ -23,25 +24,30 @@ export default function SceneControl(props: SceneControlProps) {
     }, []);
 
     return (
-        <div>
-            <select name="scene" id="scene" 
-                value={props.tempState.sceneId} 
-                onChange={(e) => props.setTempState({ ...props.tempState, sceneId: parseInt(e.target.value) })}
-            >
-                {Object.entries(scenes).map(([name, id]) => (
-                    <option key={id} value={id}>{name}</option>
-                ))}
-            </select>
-
-            <RangeNumberCombo
-                label="Speed:"
-                inputProps={{
-                    min: 10,
-                    max: 100,
-                    value: props.tempState.speed,
-                    onChange: (e) => props.setTempState({ ...props.tempState, speed: parseInt(e.target.value) }),
-                }}
+        <>
+            <Combobox
+                label="Scene"
+                unselectedText="None available"
+                searchPlaceholder="Search scenes"
+                noOptionsText="No scenes available"
+                options={Object.entries(scenes)
+                    .map(([name, id]) => ({ 
+                        value: id.toString(), 
+                        label: name }),
+                    )
+                }
+                value={props.tempState.sceneId?.toString()}
+                onChange={(value) => props.setTempState({ ...props.tempState, sceneId: parseInt(value) })}
             />
-        </div>
+
+            <InputWithLabel
+                id="speed"
+                type="slider"
+                label="Speed"
+                secondaryLabel={`${props.tempState.speed}`}
+                value={props.tempState.speed?.toString()}
+                onChange={(value) => props.setTempState({ ...props.tempState, speed: parseInt(value) })}
+            />
+        </>
     );
 }

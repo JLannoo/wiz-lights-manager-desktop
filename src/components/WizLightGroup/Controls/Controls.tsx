@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import styles from "./Controls.module.scss";
 
 import type { WizLight } from "wiz-lights-manager";
 
 import { useDebounce } from "@/hooks/useDebounce";
+
 import RGBControl, { RGBState } from "./ColorControls/RGBControl";
 import KelvinControl, { KelvinState } from "./ColorControls/KelvinControl";
 import SceneControl, { SceneState } from "./ColorControls/SceneControl";
+
 import { DEFAULT_RGB_STATE, DEFAULT_SCENE_STATE, DEFAULT_TEMP_STATE } from "./defaults";
-import RangeNumberCombo from "@/components/Inputs/RangeNumberCombo";
+
+import { Combobox } from "@/components/Combobox/Combobox";
+import { InputWithLabel } from "@/components/Inputs/InputWithLabel";
 
 type ColorState = RGBState | KelvinState | SceneState;
 
@@ -18,6 +21,12 @@ type ControlsProps = {
     setState: (state: WizLight["colorState"], ips: string[] | string) => void;
     ips: string[] | string;
 };
+
+const COLOR_OPTIONS = [
+    { value: "rgb", label: "RGB" },
+    { value: "temp", label: "Temperature" },
+    { value: "scene", label: "Scenes" },
+];
 
 export default function Controls(props: ControlsProps) {
     const [tempState, setTempState] = useState(props.state);
@@ -64,10 +73,8 @@ export default function Controls(props: ControlsProps) {
      * It shouldn't send a request to the light nor update the state.
      * Only change the controls so then the controls can update the state.
      */
-    function onColorTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        const type = e.target.value as ColorState["type"];
-
-        switch(type) {
+    function onColorTypeChange(value: string) {
+        switch(value) {
         case "rgb":
             setTempState(DEFAULT_RGB_STATE);
             break;
@@ -81,28 +88,23 @@ export default function Controls(props: ControlsProps) {
     }
     
     return (
-        <div className={styles.Controls}>
-            <select name="colorType" id="colorType" onChange={onColorTypeChange} value={props.type}>
-                <option value="rgb">RGB</option>
-                <option value="temp">Temperature</option>
-                <option value="scene">Scene</option>
-            </select>
+        <div className="flex flex-col gap-4">
+            <Combobox
+                onChange={onColorTypeChange}
+                options={COLOR_OPTIONS}
+                value={props.type}
+                unselectedText="Select color type"
+                noOptionsText="No color types"
+                searchPlaceholder="Search color type..."
+            />
 
-            <button onClick={() => {
-                setTempState((state) => ({...state, state: !state.state}));
-            }}>
-                {tempState?.state ? "Turn off" : "Turn on"}
-            </button>
-
-            <RangeNumberCombo
-                label="Brightness:"
-                unit="%"
-                inputProps={{
-                    min: 10,
-                    max: 100,
-                    value: tempState?.dimming,
-                    onChange: (e) => setTempState({ ...tempState, dimming: parseInt(e.target.value) }),
-                }}
+            <InputWithLabel
+                id="brightness"
+                type="slider"
+                label="Brightness"
+                secondaryLabel={`${tempState?.dimming}%`}
+                value={tempState?.dimming.toString()}
+                onChange={(value) => setTempState({ ...tempState, dimming: parseInt(value) })}
             />
             
             {controls}

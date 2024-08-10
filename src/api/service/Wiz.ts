@@ -1,6 +1,8 @@
 import { WizLight, WizLightManager } from "wiz-lights-manager";
 
-const manager = new WizLightManager();
+const manager = new WizLightManager({
+    blacklistedIPs: ["192.168.100.23"],
+});
 manager.init();
 
 export async function getLights() {

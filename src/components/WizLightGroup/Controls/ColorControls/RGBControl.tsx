@@ -10,27 +10,27 @@ export type RGBState = {
 
 type RGBControlProps = {
     tempState: WizLight["colorState"];
-    setTempState: (state: any) => void;
+    setTempState: (state: unknown) => void;
 }
+
+import { InputWithLabel } from "@/components/Inputs/InputWithLabel";
 
 export default function RGBControl(props: RGBControlProps) {
     if(!("r" in props.tempState)) return null;
 
     return (
         <>
-            <input 
-                type="color" 
-                name="color"
+            <InputWithLabel
                 id="color"
+                type="color"
+                label="Color"
+                secondaryLabel={`rgb(${props.tempState.r}, ${props.tempState.g}, ${props.tempState.b})`}
                 value={RGBToHex(props.tempState.r, props.tempState.g, props.tempState.b)}
-                onChange={(e) => {
-                    const [r, g, b] = HexToRGB(e.target.value);
+                onChange={(value) => {
+                    const [r, g, b] = HexToRGB(value);
                     props.setTempState({...props.tempState, r, g, b});
                 }}
             />
-            <label htmlFor="color">
-                {`rgb(${props.tempState.r}, ${props.tempState.g}, ${props.tempState.b})`}
-            </label>
         </>
     );
 }

@@ -23,7 +23,7 @@ export function getDisplayColor(colorState: WizLight["colorState"]) {
     };
 
     if (!colorState.state) {
-        color = {...color, a: 0.5 };
+        color = {r: 255, g: 255, b: 255, a: 0.5 };
     }
 
     return color;

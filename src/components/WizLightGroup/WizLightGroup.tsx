@@ -14,6 +14,13 @@ import { Card, CardContent, CardTitle } from "../ui/card";
 import { Switch } from "../ui/switch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 
+import {
+    Edit as Edit,
+} from "lucide-react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+
 type WizLightGroupProps = {
     id: string
     alias: string
@@ -22,6 +29,7 @@ type WizLightGroupProps = {
 
 export default function WizLightGroup(props: WizLightGroupProps) {
     const [groupState, setGroupState] = useState(props.lights[0].colorState);
+    const [editingAlias, setEditingTitle] = useState(false);
 
     const { setState } = useLights((state) => state);
     const loading = useLoading((state) => state.loading);
@@ -46,8 +54,10 @@ export default function WizLightGroup(props: WizLightGroupProps) {
     
     if (loading) return <h1>Loading...</h1>;
 
-    function onAliasChange(e: React.FocusEvent<HTMLHeadingElement>) {
-        const alias = e.target.textContent;
+    function onAliasChange(e: React.FocusEvent<HTMLInputElement>) {
+        const alias = e.target.value;
+        
+        setEditingTitle(false);
         if (alias === props.alias || !alias.trim().length) return;
 
         setAlias(props.id.toString(), alias);
@@ -58,9 +68,30 @@ export default function WizLightGroup(props: WizLightGroupProps) {
             <Card className="flex flex-col w-full p-2">
                 <CardTitle>
                     <div className="flex justify-between items-center">
-                        <h3 className="text-3xl p-4 font-bold" contentEditable onBlur={onAliasChange}>
-                            {props.alias}
-                        </h3>
+                        <div className="flex items-center p-4 gap-2">
+                            {editingAlias ?
+                                <Input
+                                    className="text-3xl font-bold"
+                                    defaultValue={props.alias}
+                                    onBlur={onAliasChange}
+                                    autoFocus
+                                />
+                                :
+                                <h3 className="text-3xl font-bold">
+                                    {props.alias}
+                                </h3>
+                            }
+                            <Tooltip delayDuration={0}>
+                                <TooltipTrigger>
+                                    <Button variant="ghost" onClick={() => setEditingTitle(!editingAlias)}>
+                                        <Edit size={24} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" align="center">
+                                    Edit Alias
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                         <Switch onClick={() => setState({ 
                             ...groupState, 
                             state: !groupState.state, 

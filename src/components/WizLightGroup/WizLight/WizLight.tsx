@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 
-import type { WizLight as WizLightProps } from "wiz-lights-manager";
+import type { WizLight as WizLightLib } from "wiz-lights-manager";
 
 import { getColorType } from "./getColorType";
 
 import { useLights } from "@/stores/lights";
 
-import Controls from "../Controls/Controls";
 
 import {
     Card,
@@ -17,9 +16,17 @@ import {
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 
+
 import { cn } from "@/lib/utils";
+
 import ChangeableText from "@/components/Inputs/ChangeableText";
 import PinButton from "@/components/Pin/PinButton";
+import Grip from "@/components/Grip/Grip";
+import Controls from "@/components/WizLightGroup/Controls/Controls";
+
+interface WizLightProps extends WizLightLib {
+    isWidget?: boolean;
+}
 
 export default function WizLight(props: WizLightProps) {
     const setState = useLights((state) => state.setState);
@@ -39,15 +46,24 @@ export default function WizLight(props: WizLightProps) {
         <Card
             className={cn("flex flex-col relative", {
                 "opacity-50": !props.colorState.state,
+                "h-full p-3": props.isWidget, // Full height and padding to accomodate pin
             })}
         >   
-            <div className="absolute -top-3 -left-3">
+            <div className={cn("absolute -top-3 -left-3", {
+                "top-1 left-1": props.isWidget, // Move pin inside card
+            })}>
                 <PinButton
                     value={false}
                     tooltip="Pin to desktop"
                     onClick={() => console.log("Pin to desktop")}
                 />
             </div>
+
+            {props.isWidget && 
+            <div className="absolute top-2 right-2">
+                <Grip />
+            </div>}
+
             <CardHeader>
                 <CardTitle>
                     <div className="flex items-center justify-between">

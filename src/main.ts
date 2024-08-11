@@ -8,8 +8,9 @@ if (require("electron-squirrel-startup")) {
     app.quit();
 }
 
+
 const createWindow = async () => {        
-    // Create the browser window.
+    // Create the main window.
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -19,6 +20,28 @@ const createWindow = async () => {
         icon: "/img/icons/icon.png",
         autoHideMenuBar: true,
     });
+    
+    // Create widget windows if any
+    const widgetWindows: BrowserWindow[] = [];
+    for (let i = 0; i < 1; i++) {
+        const widgetWindow = new BrowserWindow({
+            parent: mainWindow,
+            width: 400,
+            height: 300,
+            webPreferences: {
+                preload: path.join(__dirname, "preload.js"),
+            },
+            icon: "/img/icons/icon.png",
+            autoHideMenuBar: true,
+            frame: false,
+            hiddenInMissionControl: true,
+            skipTaskbar: true,
+            backgroundMaterial: "none",
+            transparent: true,
+        });
+
+        widgetWindows.push(widgetWindow);
+    }
   
 
     // and load the index.html of the app.
@@ -28,10 +51,26 @@ const createWindow = async () => {
         mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
     }
 
+    for(const widgetWindow of widgetWindows) {
+        // Send window to back
+        
+
+        if (WIDGET_WINDOW_VITE_DEV_SERVER_URL) {
+            widgetWindow.loadURL(WIDGET_WINDOW_VITE_DEV_SERVER_URL);
+        } else {
+            widgetWindow.loadFile(path.join(__dirname, `../renderer/${WIDGET_WINDOW_VITE_NAME}/index.html`));
+        }
+    }
+
     // On close minimize to tray
-    mainWindow.on("close", (event) => {
-        event.preventDefault();
+    mainWindow.on("minimize", () => {
         mainWindow.hide();
+    });
+
+    mainWindow.on("close", () => {
+        widgetWindows.forEach((widgetWindow) => {
+            widgetWindow.close();
+        });
     });
 };
 

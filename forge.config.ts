@@ -29,7 +29,11 @@ const config: ForgeConfig = {
             renderer: [
                 {
                     name: "main_window",
-                    config: "vite.renderer.config.ts",
+                    config: "src/windows/main/vite.renderer.config.ts",
+                },
+                {
+                    name: "widget_window",
+                    config: "src/windows/widget/vite.renderer.config.ts",
                 },
             ],
         }),

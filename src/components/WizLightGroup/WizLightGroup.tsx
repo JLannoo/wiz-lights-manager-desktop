@@ -34,7 +34,7 @@ export default function WizLightGroup(props: WizLightGroupProps) {
 
     const { setState } = useLights((state) => state);
     const loading = useLoading((state) => state.loading);
-    const setAlias = useGroups((state) => state.setAlias);
+    const { setAlias, pin, pinned } = useGroups(({setAlias, pinned, pin}) => ({setAlias, pinned, pin}));
 
     useEffect(() => {
         const equal = props.lights.every((light) => JSON.stringify(light.colorState) === JSON.stringify(props.lights[0].colorState));
@@ -61,14 +61,16 @@ export default function WizLightGroup(props: WizLightGroupProps) {
         setAlias(props.id.toString(), alias);
     }
 
+    const isPinned = useMemo(() => pinned.some((group) => group.id === props.id), [pinned, props.id]);
+
     return (
         <>
             <Card className="flex flex-col w-full relative">
                 <div className="absolute -top-3 -left-3">
                     <PinButton
-                        value={false}
+                        value={isPinned}
                         tooltip="Pin to desktop"
-                        onClick={() => console.log("Pin to desktop")}
+                        onClick={() => pin(String(props.id))}
                     />
                 </div>
                 <CardHeader>

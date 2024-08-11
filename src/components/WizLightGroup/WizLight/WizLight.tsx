@@ -29,7 +29,7 @@ interface WizLightProps extends WizLightLib {
 }
 
 export default function WizLight(props: WizLightProps) {
-    const setState = useLights((state) => state.setState);
+    const { setState, pinned, pin } = useLights(({setState, pinned, pin}) => ({setState, pinned, pin}));
     const setAlias = useLights((state) => state.setAlias);
 
     const type = useMemo(() => {
@@ -42,6 +42,10 @@ export default function WizLight(props: WizLightProps) {
         setAlias(props.systemConfig.mac, alias);
     }
 
+    const isPinned = useMemo(() => {
+        return pinned.some((light) => light.systemConfig.mac === props.systemConfig.mac);
+    }, [pinned]);
+
     return (
         <Card
             className={cn("flex flex-col relative", {
@@ -53,9 +57,9 @@ export default function WizLight(props: WizLightProps) {
                 "top-1 left-1": props.isWidget, // Move pin inside card
             })}>
                 <PinButton
-                    value={false}
+                    value={isPinned}
                     tooltip="Pin to desktop"
-                    onClick={() => console.log("Pin to desktop")}
+                    onClick={() => pin(props.systemConfig.mac)}
                 />
             </div>
 

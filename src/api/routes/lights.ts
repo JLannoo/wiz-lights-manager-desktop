@@ -2,7 +2,7 @@ import { WizLight } from "wiz-lights-manager";
 import { api } from "@api/router";
 import * as Wiz from "@api/service/Wiz";
 
-import { SystemStorage } from "@api/storage/store";
+import { PinnedStore, SystemStorage } from "@api/storage/store";
 
 api.route("lights")
     .handler("refresh", async (_event) => {
@@ -20,6 +20,11 @@ api.route("lights")
     })
     .handler("aliases", async (_event) => {
         return SystemStorage.get("lights.aliases");
+    })
+    .handler("pinned", async (_event) => {
+        const pinned = SystemStorage.get("pinned") as PinnedStore;
+        const lights = await Wiz.getLights();
+        return lights.filter((light) => pinned.lights.some((pinned) => pinned.mac === light.systemConfig?.mac));
     });
 
 api.route("lights")
@@ -42,4 +47,20 @@ api.route("lights")
         console.log(`Setting alias for light ${mac} to ${alias}`);
 
         SystemStorage.set("lights.aliases", aliases);
+    });
+
+api.route("lights")
+    .handler("pin", async (_event, mac: string) => {
+        const pinned = SystemStorage.get("pinned") as PinnedStore;
+        const existing = pinned.lights.find((pinned) => pinned.mac === mac);
+
+        if (existing) {
+            console.log(`Unpinning light ${mac}`);
+            pinned.lights = pinned.lights.filter((pinned) => pinned.mac !== mac);
+        } else {
+            console.log(`Pinning light ${mac}`);
+            pinned.lights.push({ mac, x: 0, y: 0, width: 0, height: 0 });
+        }
+
+        SystemStorage.set("pinned", pinned);
     });

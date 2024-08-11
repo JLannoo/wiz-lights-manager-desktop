@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import path from "path";
 import "./api/index";
-import "./api/storage/store";
+import { AllPins, PinnedStore, SystemStorage } from "./api/storage/store";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -20,14 +20,24 @@ const createWindow = async () => {
         icon: "/img/icons/icon.png",
         autoHideMenuBar: true,
     });
+
+    const pinned = SystemStorage.get("pinned") as PinnedStore;
+    const widgets: Array<AllPins> = [...pinned.groups, ...pinned.lights];
+
+    if(!widgets?.length) console.log("No widgets found");
     
     // Create widget windows if any
-    const widgetWindows: BrowserWindow[] = [];
-    for (let i = 0; i < 1; i++) {
+    const widgetWindows: {
+        window: BrowserWindow,
+        id: string,
+    }[] = [];
+    for (const widget of widgets) {
         const widgetWindow = new BrowserWindow({
             parent: mainWindow,
-            width: 400,
-            height: 300,
+            width: widget.width || undefined,
+            height: widget.height || undefined,
+            x: widget.x || undefined,
+            y: widget.y || undefined,
             webPreferences: {
                 preload: path.join(__dirname, "preload.js"),
             },
@@ -40,7 +50,14 @@ const createWindow = async () => {
             transparent: true,
         });
 
-        widgetWindows.push(widgetWindow);
+        let id = "";
+        if("mac" in widget) id = widget.mac;
+        if("id" in widget) id = widget.id;
+
+        widgetWindows.push({
+            window: widgetWindow,
+            id,
+        });
     }
   
 
@@ -51,14 +68,13 @@ const createWindow = async () => {
         mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
     }
 
-    for(const widgetWindow of widgetWindows) {
+    for(const widget of widgetWindows) {
         // Send window to back
-        
 
         if (WIDGET_WINDOW_VITE_DEV_SERVER_URL) {
-            widgetWindow.loadURL(WIDGET_WINDOW_VITE_DEV_SERVER_URL);
+            widget.window.loadURL(`${WIDGET_WINDOW_VITE_DEV_SERVER_URL}?id=${widget.id}`);
         } else {
-            widgetWindow.loadFile(path.join(__dirname, `../renderer/${WIDGET_WINDOW_VITE_NAME}/index.html`));
+            widget.window.loadFile(path.join(__dirname, `../renderer/${WIDGET_WINDOW_VITE_NAME}/index.html?id=${widget.id}`));
         }
     }
 
@@ -69,7 +85,7 @@ const createWindow = async () => {
 
     mainWindow.on("close", () => {
         widgetWindows.forEach((widgetWindow) => {
-            widgetWindow.close();
+            widgetWindow.window.close();
         });
     });
 };

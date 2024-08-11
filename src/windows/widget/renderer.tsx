@@ -19,13 +19,17 @@ if (!rootElement.innerHTML) {
 function Scenes() {
     const lights = useLights();
 
+    const id = new URLSearchParams(window.location.search).get("id");    
+
     useEffect(() => {
         lights.refresh();
     }, []);
+
+    const light = lights.lights.find((light) => light.systemConfig.mac === id);
     
     return (
-        lights.lights.length ? (
-            <WizLight {...lights.lights[1]} isWidget />
+        light ? (
+            <WizLight {...light} isWidget />
         ) : (
             <div className="flex items-center justify-center h-full flex-col">
                 <div className="w-5 h-5 bg-primary rounded-full animate-ping" />

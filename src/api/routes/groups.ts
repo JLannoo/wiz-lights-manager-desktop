@@ -1,5 +1,5 @@
 import { api } from "../router";
-import { GroupsStore, SystemStorage } from "../storage/store";
+import { GroupsStore, PinnedStore, SystemStorage } from "../storage/store";
 
 api.route("groups")
     .route("aliases")
@@ -19,6 +19,31 @@ api.route("groups")
         }
         
         SystemStorage.set("groups.aliases", aliases);
+
+        return;
+    });
+
+api.route("groups")
+    .route("get")
+    .handler("pinned", async (_event) => {
+        const pinned = SystemStorage.get("pinned") as PinnedStore;
+        return pinned.groups;
+    });
+
+api.route("groups")
+    .handler("pin", async (_event, id: string) => {
+        const pinned = SystemStorage.get("pinned") as PinnedStore;
+        const existing = pinned.groups.find((pinned) => pinned.id === id);
+
+        if (existing) {
+            console.log(`Unpinning group ${id}`);
+            pinned.groups = pinned.groups.filter((pinned) => pinned.id !== id);
+        } else {
+            console.log(`Pinning group ${id}`);
+            pinned.groups.push({ id, x: 0, y: 0, width: 300, height: 300 });
+        }
+
+        SystemStorage.set("pinned", pinned);
 
         return;
     });

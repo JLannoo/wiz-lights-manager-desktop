@@ -40,6 +40,19 @@ export const SystemStorage = new Store({
                 },
             },
         },
+        pinned: {
+            type: "object",
+            properties: {
+                groups: {
+                    type: "array",
+                    items: { type: "string" },
+                },
+                lights: {
+                    type: "array",
+                    items: { type: "string" },
+                },
+            },
+        },
     },
     defaults: {
         groups: {
@@ -47,6 +60,10 @@ export const SystemStorage = new Store({
         },
         lights: {
             aliases: [],
+        },
+        pinned: {
+            groups: [],
+            lights: [],
         },
     },
 });

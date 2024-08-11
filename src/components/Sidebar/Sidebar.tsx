@@ -70,7 +70,7 @@ export default function Sidebar({ sidebarCollapsed }: SidebarProps) {
                         </Tooltip>
                         :
                         <Link to={link.link} className="w-full" key={link.label}>
-                            <Button variant="link" className="flex items-center justify-start gap-2 p-2 w-full">
+                            <Button variant="link" className="flex items-center justify-start gap-2 p-2 w-full text-inherit">
                                 <link.icon size={24} />
                                 {link.label}
                             </Button>

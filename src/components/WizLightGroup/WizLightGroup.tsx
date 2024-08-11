@@ -21,6 +21,7 @@ import { Switch } from "../ui/switch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 
 import ChangeableText from "../Inputs/ChangeableText";
+import PinButton from "../Pin/PinButton";
 
 type WizLightGroupProps = {
     id: string
@@ -62,7 +63,14 @@ export default function WizLightGroup(props: WizLightGroupProps) {
 
     return (
         <>
-            <Card className="flex flex-col w-full">
+            <Card className="flex flex-col w-full relative">
+                <div className="absolute -top-3 -left-3">
+                    <PinButton
+                        value={false}
+                        tooltip="Pin to desktop"
+                        onClick={() => console.log("Pin to desktop")}
+                    />
+                </div>
                 <CardHeader>
                     <CardTitle>
                         <div className="flex justify-between items-center">

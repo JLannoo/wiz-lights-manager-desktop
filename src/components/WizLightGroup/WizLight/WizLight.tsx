@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { cn } from "@/lib/utils";
 import ChangeableText from "@/components/Inputs/ChangeableText";
+import PinButton from "@/components/Pin/PinButton";
 
 export default function WizLight(props: WizLightProps) {
     const setState = useLights((state) => state.setState);
@@ -36,10 +37,17 @@ export default function WizLight(props: WizLightProps) {
 
     return (
         <Card
-            className={cn("flex flex-col", {
+            className={cn("flex flex-col relative", {
                 "opacity-50": !props.colorState.state,
             })}
-        >
+        >   
+            <div className="absolute -top-3 -left-3">
+                <PinButton
+                    value={false}
+                    tooltip="Pin to desktop"
+                    onClick={() => console.log("Pin to desktop")}
+                />
+            </div>
             <CardHeader>
                 <CardTitle>
                     <div className="flex items-center justify-between">

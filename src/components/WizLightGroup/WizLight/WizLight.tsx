@@ -2,7 +2,6 @@ import { useMemo } from "react";
 
 import type { WizLight as WizLightProps } from "wiz-lights-manager";
 
-import { getDisplayColor } from "./getDisplayColor";
 import { getColorType } from "./getColorType";
 
 import { useLights } from "@/stores/lights";
@@ -22,8 +21,6 @@ import { cn } from "@/lib/utils";
 
 export default function WizLight(props: WizLightProps) {
     const setState = useLights((state) => state.setState);
-    
-    const displayColor = useMemo(() => getDisplayColor(props.colorState), [props.colorState]);     
 
     const type = useMemo(() => {
         return getColorType(props.colorState);
@@ -34,11 +31,6 @@ export default function WizLight(props: WizLightProps) {
             className={cn("flex flex-col shadow-lg rounded-md ", {
                 "opacity-50": !props.colorState.state,
             })}
-            style={{
-                boxShadow: props.colorState.state ? 
-                    `0 0 1rem 0 rgba(${displayColor.r}, ${displayColor.g}, ${displayColor.b}, ${displayColor.a})` :
-                    "",
-            }}
         >
             <CardHeader>
                 <CardTitle>

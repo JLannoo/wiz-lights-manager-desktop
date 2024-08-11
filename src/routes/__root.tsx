@@ -41,7 +41,7 @@ function Root() {
                             minSize={24}
                             maxSize={40}
                             collapsible
-                            className="bg-gray-950 p-4 overflow-auto"
+                            className="bg-background p-4 overflow-auto"
                             onCollapse={() => setSidebarCollapsed(true)}
                             onExpand={() => setSidebarCollapsed(false)}
                             defaultSize={sidebarCollapsed ? 6 : 24}

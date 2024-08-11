@@ -8,6 +8,7 @@ type LightState = {
     refresh: () => Promise<void>
     get: (ip: string) => Promise<WizLight | undefined>
     setState: (state: WizLight["colorState"], ips?: string[] | string) => Promise<void>
+    setAlias: (id: string, alias: string) => Promise<void>
 }
 
 export const useLights = create<LightState>((set, get) => ({
@@ -50,5 +51,9 @@ export const useLights = create<LightState>((set, get) => ({
         } catch (e) {
             console.error(e);
         }
+    },
+    setAlias: async (id, alias) => {
+        await window.api.lights.set.alias(alias, id);
+        await get().refresh();
     },
 }));

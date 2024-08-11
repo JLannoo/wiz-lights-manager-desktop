@@ -18,24 +18,32 @@ import {
 import { Switch } from "@/components/ui/switch";
 
 import { cn } from "@/lib/utils";
+import ChangeableText from "@/components/Inputs/ChangeableText";
 
 export default function WizLight(props: WizLightProps) {
     const setState = useLights((state) => state.setState);
+    const setAlias = useLights((state) => state.setAlias);
 
     const type = useMemo(() => {
         return getColorType(props.colorState);
     }, [props.colorState]);
 
+    function onAliasChange(alias: string) {
+        if (alias === props.alias || !alias.trim().length) return;
+
+        setAlias(props.systemConfig.mac, alias);
+    }
+
     return (
         <Card
-            className={cn("flex flex-col shadow-lg rounded-md ", {
+            className={cn("flex flex-col", {
                 "opacity-50": !props.colorState.state,
             })}
         >
             <CardHeader>
                 <CardTitle>
                     <div className="flex items-center justify-between">
-                        {props.alias || props.ip}
+                        <ChangeableText value={props.alias || props.ip} onChange={onAliasChange} />
                         <Switch
                             checked={props.colorState.state}
                             onClick={() => {
@@ -48,7 +56,8 @@ export default function WizLight(props: WizLightProps) {
                     </div>
                 </CardTitle>
                 <CardDescription>
-                    MAC Adress: {props.systemConfig.mac}
+                    <p>MAC Adress: {props.systemConfig.mac}</p>
+                    {props.alias && <p>IP: {props.ip}</p>}
                 </CardDescription>
             </CardHeader>
 

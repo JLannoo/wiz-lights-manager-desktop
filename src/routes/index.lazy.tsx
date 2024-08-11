@@ -17,6 +17,7 @@ import { useLoading } from "@/stores/loading";
 import { useEffect } from "react";
 import WizLight from "@/components/WizLightGroup/WizLight/WizLight";
 import WizLightGroup from "@/components/WizLightGroup/WizLightGroup";
+import SkeletonCards from "@/components/Skeleton/SkeletonCards";
 
 
 function Index() {
@@ -46,10 +47,10 @@ function Index() {
             </h3>
 
             {loading.loading ? (
-                <p>Loading...</p>
+                <SkeletonCards count={6} />
             ) : (
                 <>
-                    <div className="flex gap-4 flex-wrap">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {lights.lights.map((light) => (
                             <WizLight key={light.systemConfig.mac} {...light} />
                         ))}
@@ -60,7 +61,7 @@ function Index() {
             <h3 className="text-3xl p-4">
                 Groups&nbsp;
                 {loading.loading ? null : `(${groups.groups().length})`}
-                {!loading.loading &&  (
+                {!loading.loading && (
                     <Button variant="outline" size="sm" className="ml-2" onClick={groups.refresh}>
                         <Refresh size={24} />
                     </Button>
@@ -68,10 +69,10 @@ function Index() {
             </h3>
 
             {loading.loading ? (
-                <p>Loading...</p>
+                <SkeletonCards count={6} className="w-full" />
             ) : (
                 <>
-                    <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {groups.groups().map((group) => (
                             <WizLightGroup key={group.id} {...group} />
                         ))}

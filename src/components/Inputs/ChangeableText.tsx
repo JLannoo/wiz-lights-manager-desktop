@@ -16,7 +16,7 @@ export default function ChangeableText(props: ChangeableTextProps) {
     const [editing, setEditing] = useState(false);
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 group">
             {editing ?
                 <Input
                     className="text-3xl font-bold"
@@ -34,7 +34,7 @@ export default function ChangeableText(props: ChangeableTextProps) {
             }
             <Tooltip delayDuration={0}>
                 <TooltipTrigger>
-                    <Button variant="ghost" onClick={() => setEditing(!editing)}>
+                    <Button variant="ghost" onClick={() => setEditing(!editing)} className="opacity-0 transition-all -translate-x-2 group-hover:opacity-100 group-hover:-translate-x-0">
                         <Edit size={24} />
                     </Button>
                 </TooltipTrigger>

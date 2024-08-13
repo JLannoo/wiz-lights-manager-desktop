@@ -16,12 +16,12 @@ if (!rootElement.innerHTML) {
     const root = createRoot(rootElement);
     root.render(
         <TooltipProvider>
-            <Scenes />
+            <Widget />
         </TooltipProvider>,
     );
 }
 
-function Scenes() {
+function Widget() {
     const lights = useLights();
     const groups = useGroups();
 
@@ -35,14 +35,6 @@ function Scenes() {
 
     const light = lights.lights.find((light) => light.systemConfig.mac === id);
     const group = groups.groups().find((group) => group.id == id);
-
-    console.log({
-        id,
-        isGroup,
-        light,
-        group,
-    });
-    
     
     return (
         (light || group) ? (

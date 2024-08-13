@@ -2,12 +2,17 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import "./api/index";
 import { AllPins, PinnedStore, SystemStorage } from "./api/storage/store";
+import { debounce, onMove, onResize } from "./windows/widget/events";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
     app.quit();
 }
 
+export type Widget = {
+    window: BrowserWindow,
+    id: string,
+};
 
 const createWindow = async () => {        
     // Create the main window.
@@ -27,10 +32,7 @@ const createWindow = async () => {
     if(!widgets?.length) console.log("No widgets found");
     
     // Create widget windows if any
-    const widgetWindows: {
-        window: BrowserWindow,
-        id: string,
-    }[] = [];
+    const widgetWindows: Widget[] = [];
     for (const widget of widgets) {
         const widgetWindow = new BrowserWindow({
             parent: mainWindow,
@@ -76,6 +78,9 @@ const createWindow = async () => {
         } else {
             widget.window.loadFile(path.join(__dirname, `../renderer/${WIDGET_WINDOW_VITE_NAME}/index.html?id=${widget.id}`));
         }
+
+        widget.window.on("move", debounce(1000, () => onMove(widget)));
+        widget.window.on("resize", debounce(1000, () => onResize(widget)));
     }
 
     // On close minimize to tray

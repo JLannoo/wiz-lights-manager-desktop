@@ -22,11 +22,15 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 
 import ChangeableText from "../Inputs/ChangeableText";
 import PinButton from "../Pin/PinButton";
+import Grip from "../Grip/Grip";
+
+import { cn } from "@/lib/utils";
 
 type WizLightGroupProps = {
     id: string
     alias: string
     lights: WizLightType[]
+    isWidget?: boolean
 }
 
 export default function WizLightGroup(props: WizLightGroupProps) {
@@ -61,18 +65,28 @@ export default function WizLightGroup(props: WizLightGroupProps) {
         setAlias(props.id.toString(), alias);
     }
 
-    const isPinned = useMemo(() => pinned.some((group) => group.id === props.id), [pinned, props.id]);
+    const isPinned = useMemo(() => pinned.some((group) => group.id == props.id), [pinned, props.id]);
 
     return (
         <>
-            <Card className="flex flex-col w-full relative">
-                <div className="absolute -top-3 -left-3">
+            <Card className={cn("flex flex-col w-full relative", {
+                "h-full p-3": props.isWidget, // Full height and padding to accomodate pin
+            })}>
+                <div className={cn("absolute -top-3 -left-3", {
+                    "top-1 left-1": props.isWidget, // Move pin inside card
+                })}>
                     <PinButton
                         value={isPinned}
                         tooltip="Pin to desktop"
                         onClick={() => pin(String(props.id))}
                     />
                 </div>
+
+                {props.isWidget && 
+                <div className="absolute top-2 right-2">
+                    <Grip />
+                </div>}
+                
                 <CardHeader>
                     <CardTitle>
                         <div className="flex justify-between items-center">

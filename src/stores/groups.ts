@@ -54,7 +54,7 @@ export const useGroups = create<GroupState>((set, get) => ({
     },
     getPinned: async () => {
         const pinned = await window.api.groups.get.pinned();
-        return get().groups().filter((group) => pinned.some((pinned) => pinned.id === group.id));
+        return get().groups().filter((group) => pinned.some((pinned) => pinned.id == group.id));
     },
     pin: async (id) => {
         await window.api.groups.pin(id);
